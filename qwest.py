@@ -1,4 +1,15 @@
-player = {"name": "name", "health": 100, "coins": 50, "turns": 0, "inventory": []}
+player = {
+    "name": "name",
+    "health": 100,
+    "coins": 50,
+    "turns": 0,
+    "gender": "male",
+    "inventory": [],
+}
+
+
+def get_pronoun(gender: str, **values) -> str:
+    return values.get(gender, "...")
 
 
 def show_status(player):
@@ -16,7 +27,8 @@ def start():
 
 
 def city_center():
-    print("\nТы пришла к центру города, куда двинешься дальше?")
+    word = get_pronoun(player["gender"], male="пришел", female="пришла")
+    print(f"\nТы {word} к центру города, куда двинешься дальше?")
     print("  1. Отдохнуть в гостинице")
     print("  2. Подкрепиться в местном кафе")
     print("  3. Осмотреться (фонтан)")
@@ -33,7 +45,8 @@ def fountain(player):
             break
         reversed_word = word[::-1]
         if word == reversed_word and len(word) > 2:
-            print("молодец! ты получил бутылочку живой воды!")
+            word = get_pronoun(player["gender"], male="получил", female="получила")
+            print(f"молодец! ты {word} бутылочку живой воды!")
             player["inventory"].append("Бутылочка воды")
             break
         print("попробуй еще раз")
@@ -75,7 +88,8 @@ def main():
                 case "3":  # идти в фонтан
                     player["location"] = "фонтан"
                 case "4":
-                    print("\nТы решила уйти. Спасибо за игру!")
+                    word = get_pronoun(player["gender"], male="решил", female="решила")
+                    print(f"\nТы {word} уйти. Спасибо за игру!")
                     return
                 case "5":  # показать статистику
                     show_status(player)

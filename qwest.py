@@ -16,7 +16,7 @@ def start():
 
 
 def city_center():
-    print("\n Ты пришла к центру города, куда двинешься дальше?")
+    print("\nТы пришла к центру города, куда двинешься дальше?")
     print("  1. Отдохнуть в гостинице")
     print("  2. Подкрепиться в местном кафе")
     print("  3. Осмотреться (фонтан)")
@@ -26,55 +26,69 @@ def city_center():
 
 
 def fountain(player):
-    solved = False
-    while not solved:
+    while 1:
         word = input("введи слово палиндром: ").lower().strip()
         if word == "выйти":
             break
         reversed_word = word[::-1]
         if word == reversed_word:
-            print("молодец! у тебя появилась бутылочка живой воды!")
+            print("молодец! ты получил бутылочку живой воды!")
             player["inventory"].append("Бутылочка воды")
-            solved = True
-        else:
-            print("попробуй еще раз")
+            break
+        print("попробуй еще раз")
 
     return player
 
 
-def main():
-    global player
+def motel():
+    pass
 
+
+def cafe():
+    pass
+
+
+def main():
     print()
-    print(" Добро пожаловать в Твинкс!")
+    print("Добро пожаловать в Твинкс!")
     print()
+
+    choice = start()
+    if choice == "выйти":
+        print("Ты покидаешь Твинкс")
+        return
 
     while player["health"] > 0 and player["coins"] >= 0:
         player["turns"] += 1
-        show_status(player)
-        choice = start()
+        loc = player.get("location")
 
-        if choice == "1" or choice == "идти вперед":
-            center_choice = city_center()
+        # старт
+        if loc is None or loc == "центр":
+            player["location"] = "центр"
+            choice = city_center()
+            match choice:
+                case "1":  # гостиница
+                    player["location"] = "гостиница"
+                case "2":  # кафе
+                    player["location"] = "кафе"
+                case "3":  # фонтан
+                    player["location"] = "фонтан"
+                case "4":
+                    print("\nТы решила уйти. Спасибо за игру!")
+                    return
+                case _:
+                    print("Неверный выбор.")
 
-            if center_choice == "1":
-                print(" Гостиница — в разработке")
-            elif center_choice == "2":
-                print(" Кафе — в разработке")
-            elif center_choice == "3":
-                player = fountain(player)
-            elif center_choice == "4":
-                print("\n Ты решила уйти. Спасибо за игру!")
-                break
-            else:
-                print(" Неверный выбор.")
-
-        elif choice == "2" or choice == "выйти":
-            print("\n Ты решила уйти. Спасибо за игру!")
-            break
-
-        else:
-            print(" Неверный выбор. Попробуй ещё раз.")
+            continue
+        # логика гостиницы
+        elif loc == "гостинциа":
+            motel()
+        # логика кафе
+        elif loc == "кафе":
+            cafe()
+        # логика фонтана
+        elif loc == "фонтан":
+            fountain(player)
 
 
 if __name__ == "__main__":

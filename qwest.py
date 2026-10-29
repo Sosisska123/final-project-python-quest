@@ -2,7 +2,7 @@ player = {"name": "name", "health": 100, "coins": 50, "turns": 0, "inventory": [
 
 
 def show_status(player):
-    print("твои характеристики")
+    print("твои характеристики:")
     for key, values in player.items():
         print(key, "-", values)
 
@@ -21,6 +21,7 @@ def city_center():
     print("  2. Подкрепиться в местном кафе")
     print("  3. Осмотреться (фонтан)")
     print("  4. Выйти из игры")
+    print("  5. Показать статистику")
     choice = input("\nТвой выбор: ").lower().strip()
     return choice
 
@@ -31,7 +32,7 @@ def fountain(player):
         if word == "выйти":
             break
         reversed_word = word[::-1]
-        if word == reversed_word:
+        if word == reversed_word and len(word) > 2:
             print("молодец! ты получил бутылочку живой воды!")
             player["inventory"].append("Бутылочка воды")
             break
@@ -40,11 +41,11 @@ def fountain(player):
     return player
 
 
-def motel():
+def motel(player):
     pass
 
 
-def cafe():
+def cafe(player):
     pass
 
 
@@ -67,28 +68,33 @@ def main():
             player["location"] = "центр"
             choice = city_center()
             match choice:
-                case "1":  # гостиница
+                case "1":  # идти в гостиницу
                     player["location"] = "гостиница"
-                case "2":  # кафе
+                case "2":  # идти в кафе
                     player["location"] = "кафе"
-                case "3":  # фонтан
+                case "3":  # идти в фонтан
                     player["location"] = "фонтан"
                 case "4":
                     print("\nТы решила уйти. Спасибо за игру!")
                     return
+                case "5":  # показать статистику
+                    show_status(player)
                 case _:
                     print("Неверный выбор.")
 
             continue
         # логика гостиницы
         elif loc == "гостинциа":
-            motel()
+            motel(player)
+            player["location"] = "центр"
         # логика кафе
         elif loc == "кафе":
-            cafe()
+            cafe(player)
+            player["location"] = "центр"
         # логика фонтана
         elif loc == "фонтан":
             fountain(player)
+            player["location"] = "центр"
 
 
 if __name__ == "__main__":
